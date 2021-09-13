@@ -9,6 +9,7 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 
+import jpa.EntityManagerHelper;
 import jpa.Entity.Etudiant;
 import jpa.Entity.Professeur;
 import jpa.Entity.Rdv;
@@ -17,8 +18,8 @@ public class RepositoryRequests {
 
     private EntityManager manager;
 
-	public RepositoryRequests(EntityManager manager){
-		this.manager = manager;
+	public RepositoryRequests(){
+		manager = EntityManagerHelper.getEntityManager();
 	}
 
    public List<Etudiant> getAllEtudiants(){

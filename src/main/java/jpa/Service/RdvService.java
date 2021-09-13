@@ -3,7 +3,9 @@ package jpa.Service;
 import java.util.Date;
 
 import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 
+import jpa.EntityManagerHelper;
 import jpa.Entity.Etudiant;
 import jpa.Entity.Professeur;
 import jpa.Entity.Rdv;
@@ -12,8 +14,8 @@ public class RdvService {
 
     private EntityManager manager;
 
-    public RdvService(EntityManager entityManager){
-        this.manager = entityManager;
+    public RdvService(){
+        manager = EntityManagerHelper.getEntityManager();
     }
 
     //cré des rdv disponibles pour les etudiants
