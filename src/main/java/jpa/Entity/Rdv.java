@@ -94,6 +94,9 @@ public class Rdv {
 
     @Override
     public String toString(){
+        if(etudiant != null)
         return "Le rendez-vous " + this.id + ", de " + this.heureDebut + " a " + this.heureFin + " avec " + this.professeur.getName() + " est pris par " + this.etudiant.getName();
+        return "Le rendez-vous " + this.id + ", de " + this.heureDebut + " a " + this.heureFin + " avec " + this.professeur.getName() + " est disponible";
     }   
+
 }

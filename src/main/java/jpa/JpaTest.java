@@ -48,15 +48,15 @@ public class JpaTest {
         EntityTransaction tx = manager.getTransaction();
         tx.begin();
 		test.resetDb();
+		manager.flush();
         try {
 			test.test();
-        
+			manager.flush();
         } catch (Exception e) {
             e.printStackTrace();
         }
-		manager.flush();
-        tx.commit();
         test.result();
+		tx.commit();
         manager.close();
         factory.close();
     }
@@ -64,7 +64,7 @@ public class JpaTest {
 	private void test(){
 		System.out.println("Debut des tests");
 		System.out.println("Creation des etudiants");
-		/*Etudiant e1 = new Etudiant("Harry Potter");
+		Etudiant e1 = new Etudiant("Harry Potter");
 		Etudiant e2 = new Etudiant("Hermione Granger");
 		Etudiant e3 = new Etudiant("Ron Weaseley");
 		Etudiant e4 = new Etudiant("Dobby");
@@ -80,10 +80,10 @@ public class JpaTest {
 		manager.persist(p1);
 		manager.persist(p2);
 		manager.persist(p3);
-		manager.persist(p4);*/
+		manager.persist(p4);
 		System.out.println("Creation de rdvs sans query la db");
 		Date d1 = new Date();
-		//rdvService.createPossibleRdv(d1, p2);
+		rdvService.createPossibleRdv(d1, p2);
 
 		manager.flush();
 		System.out.println("Creaton de rdv avec query");
@@ -93,10 +93,23 @@ public class JpaTest {
 		System.out.println("Prise du rdv par un étudiant");
 		Etudiant etudiantFromDb = repoReq.findEtudiantByName("Harry Potter");
 		rdvService.prendreRdv(rdv, etudiantFromDb);
+		manager.flush();
 	}
 	
 	private void resetDb(){
-			manager.clear();
+		Iterator<Rdv> rdvs = repoReq.getAllRdvs().iterator();
+		while(rdvs.hasNext()){
+			manager.remove(rdvs.next());
+		}
+		Iterator<Etudiant> etudiant = repoReq.getAllEtudiants().iterator();
+		while(etudiant.hasNext()){
+			manager.remove(etudiant.next());
+		}
+		Iterator<Professeur> professeur = repoReq.getAllProfesseurs().iterator();
+		while(professeur.hasNext()){
+			manager.remove(professeur.next());
+		}
+		manager.flush();
 	}
 
 
@@ -111,9 +124,15 @@ public class JpaTest {
 		}
 		List<Professeur> listprof = repoReq.getAllProfesseurs();
 		Iterator<Professeur> itprof = listprof.iterator();
-		System.out.println("Test 2 : Etudiants");
+		System.out.println("Test 2 : Professeurs");
 		while(itprof.hasNext()){
 			System.out.println(itprof.next());
+		}
+		List<Rdv> listRdv = repoReq.getAllRdvs();
+		Iterator<Rdv> itrdv = listRdv.iterator();
+		System.out.println("Test 3 : Liste Rdv");
+		while(itrdv.hasNext()){
+			System.out.println(itrdv.next());
 		}
 	}
 }

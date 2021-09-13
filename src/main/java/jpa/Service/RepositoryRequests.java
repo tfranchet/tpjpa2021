@@ -38,6 +38,15 @@ public class RepositoryRequests {
 		List<Professeur> result = manager.createQuery(query).getResultList();
 		return result;
 
+    } 
+	  public List<Rdv> getAllRdvs(){
+       CriteriaBuilder criteriaBuilder = manager.getCriteriaBuilder();
+		CriteriaQuery<Rdv> query = criteriaBuilder.createQuery(Rdv.class);
+		Root<Rdv> from = query.from(Rdv.class);
+		query.select(from);
+		List<Rdv> result = manager.createQuery(query).getResultList();
+		return result;
+
     }
 	  public Professeur findProfByName(String str){
 		List<Professeur> results = manager.createQuery("SELECT p FROM Professeur p where p.name = :value1")

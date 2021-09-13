@@ -21,19 +21,25 @@ public class RdvService {
         Date dateFin = new Date();
         dateFin.setTime(dateDebut.getTime() + duration); // 1h base
         Rdv ret = new Rdv(professeur, dateDebut, dateFin);
+        professeur.addRdv(ret);
         manager.persist(ret);
+        manager.persist(professeur);
         return ret;
     }
     public Rdv createPossibleRdv(Date dateDebut, Professeur professeur){
         Rdv ret = new Rdv(professeur, dateDebut);
+        professeur.addRdv(ret);
         manager.persist(ret);
+        manager.persist(professeur);
         return ret;
     }
     
     //assign un étudiant au rdv
     public void prendreRdv(Rdv rdv, Etudiant etudiant){
         rdv.setEtudiant(etudiant);
+        etudiant.addRdv(rdv);
         manager.persist(rdv);
+        manager.persist(etudiant);
         manager.flush();
     }
         //decaler un rdv
@@ -53,13 +59,22 @@ public class RdvService {
     //supprimer un rdv
     public void supprimerRdv(Rdv rdv){
         manager.remove(rdv);
+        Etudiant etudiant = rdv.getEtudiant();
+        Professeur professeur = rdv.getProfesseur();
+        etudiant.removeRdv(rdv);
+        professeur.removeRdv(rdv);
+        manager.persist(etudiant);
+        manager.persist(professeur);
         manager.flush();
     }
 
     //décommander un rdv
     public void decommandRdv(Rdv rdv){
+        Etudiant etudiant = rdv.getEtudiant();
         rdv.setEtudiant(null);
+        etudiant.removeRdv(rdv);
         manager.persist(rdv);
+        manager.persist(etudiant);
         manager.flush();
     }
 }

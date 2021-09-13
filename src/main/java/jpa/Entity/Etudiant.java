@@ -61,6 +61,14 @@ public class Etudiant implements Personne{
         this.rdvs = rdvs;
     }
 
+    public void addRdv(Rdv rdv){
+        this.rdvs.add(rdv);
+    } 
+    
+    public void removeRdv(Rdv rdv){
+        this.rdvs.remove(rdv);
+    }
+
     public String toString(){
         return "L'etudiant " + name + " à pris " + rdvs.size() + "rdvs";
     }
