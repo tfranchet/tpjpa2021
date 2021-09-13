@@ -23,7 +23,7 @@ public void doPost(HttpServletRequest request,
         response.setContentType("text/html");
         UsersService usersService = new UsersService();
         usersService.ajoutUser(request.getParameter("name"), request.getParameter("email"), request.getParameter("fonction"));
-        RequestDispatcher view = request.getRequestDispatcher("listUser");
+        RequestDispatcher view = request.getRequestDispatcher("/user/list");
                 view.forward(request, response);
 }
 }

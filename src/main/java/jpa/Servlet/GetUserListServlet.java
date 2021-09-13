@@ -36,4 +36,8 @@ public class GetUserListServlet extends HttpServlet {
         out.println("</UL>\n" +                
         "</BODY></HTML>");
 }
+
+        public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
+                doGet(request, response);
+        }
 }
