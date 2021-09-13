@@ -1,6 +1,7 @@
 package jpa.Service;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.persistence.EntityManager;
 
@@ -69,6 +70,25 @@ public class RdvService {
         manager.flush();
     }
 
+        //supprimer des rdvs
+        public void supprimerRdvs(List<Rdv> rdvs){
+            for (Rdv rdv : rdvs) {
+                Etudiant etudiant = rdv.getEtudiant();
+                Professeur professeur = rdv.getProfesseur();
+                if(etudiant != null){
+                    etudiant.removeRdv(rdv);
+                    manager.persist(etudiant);
+                }
+                if(professeur != null){
+                    professeur.removeRdv(rdv);
+                    manager.persist(professeur);
+                }
+            }
+            manager.flush();
+            for (Rdv rdv : rdvs) {
+                manager.remove(rdv);
+            }
+        }
     //décommander un rdv
     public void decommandRdv(Rdv rdv){
         Etudiant etudiant = rdv.getEtudiant();
@@ -76,6 +96,17 @@ public class RdvService {
         etudiant.removeRdv(rdv);
         manager.persist(rdv);
         manager.persist(etudiant);
+        manager.flush();
+    } 
+       //décommander tout rdvs
+    public void decommandRdvs(List<Rdv> rdvs){
+        for (Rdv rdv : rdvs) {
+        Etudiant etudiant = rdv.getEtudiant();
+        rdv.setEtudiant(null);
+        etudiant.removeRdv(rdv);
+        manager.persist(rdv);
+        manager.persist(etudiant);
+        }
         manager.flush();
     }
 }

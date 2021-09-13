@@ -23,10 +23,12 @@ public class GetUserListServlet extends HttpServlet {
         String[][] usersinfo = usersService.getAllUsers();
         out.println("<HTML>\n<BODY>\n" +
                 "<H1>Liste des utilisateurs</H1>\n");
+                out.println("<h3>Professeurs</h3>");
         for (String string : usersinfo[0]) {
                 if(string != null)
                 out.println("<LI>" + string + "</LI>");
         };
+        out.println("<h3>Etudiants</h3>");
         for (String string : usersinfo[1]) {
                 if(string != null)
                 out.println("<LI>" + string + "</LI>");

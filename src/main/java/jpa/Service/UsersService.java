@@ -38,22 +38,43 @@ public class UsersService {
 
     public String[][] getAllUsers(){
         String[][] ret = new String[2][50];
+        //For dev
         ret[0][0] = "Professeurs";
         ret[1][0] = "Etudiant";
         RepositoryRequests repreq = new RepositoryRequests();
         List<Etudiant> e = repreq.getAllEtudiants();
         List<Professeur> p = repreq.getAllProfesseurs();
-        int i = 1;
+        int i = 0;
         for (Etudiant etudiant : e) {
-            ret[1][i] = etudiant.toString();
+            ret[1][i] = etudiant.toString() + "<a href=\"http://localhost:8080/user/rm/?id=" + etudiant.getId() + "\"> Delete </a>";
             i++;
         }
-        i = 1;
+        i = 0;
             
         for (Professeur professeur : p) {
-            ret[0][i] = professeur.toString();
+            ret[0][i] = professeur.toString()+ "<a href=\"http://localhost:8080/user/rm/?id=" + professeur.getId() + "\"> Delete </a>";
+            ;
             i++;
         }
         return ret;
+    }
+
+    public void removeUser(String id){
+        manager.getTransaction().begin();
+        RdvService rdvService = new RdvService();
+        Long idlong = Long.parseLong(id);
+        Etudiant e = manager.find(Etudiant.class, idlong);
+        Professeur p = manager.find(Professeur.class, idlong);
+        if(e != null) {
+            rdvService.decommandRdvs(e.getRdvs());
+            manager.remove(e);
+        }
+        else if (p != null){
+            rdvService.supprimerRdvs(p.getRdvs());
+            manager.remove(p);
+        }
+        System.out.println(id);
+        manager.flush();
+        manager.getTransaction().commit();
     }
 }

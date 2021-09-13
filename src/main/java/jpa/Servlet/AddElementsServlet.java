@@ -1,11 +1,5 @@
 package jpa.Servlet;
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.util.Enumeration;
-
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.PersistenceUnit;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
@@ -27,19 +21,9 @@ public void doPost(HttpServletRequest request,
      throws ServletException, IOException {
         System.out.println(request.getParameter("email"));
         response.setContentType("text/html");
-        PrintWriter out = response.getWriter();
         UsersService usersService = new UsersService();
         usersService.ajoutUser(request.getParameter("name"), request.getParameter("email"), request.getParameter("fonction"));
-        out.println("<HTML>\n<BODY>\n" +
-                "<H1>Recapitulatif des informations</H1>\n" +
-                "<UL>\n" +            
-        " <LI>Nom: "
-                + request.getParameter("name") + "\n" +
-                " <LI>Email: "
-                + request.getParameter("email") + "\n" +
-                " <LI>Fonction: "
-                + request.getParameter("fonction") + "\n" +
-                "</UL>\n" +                
-        "</BODY></HTML>");
+        RequestDispatcher view = request.getRequestDispatcher("listUser");
+                view.forward(request, response);
 }
 }
