@@ -1,14 +1,12 @@
 package jpa.Service;
 
-import java.util.Date;
+import java.util.List;
 
 import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-
 import jpa.EntityManagerHelper;
 import jpa.Entity.Etudiant;
 import jpa.Entity.Professeur;
-import jpa.Entity.Rdv;
+
 
 public class UsersService {
     private EntityManager manager;
@@ -36,5 +34,26 @@ public class UsersService {
         System.out.println("added to db");
         manager.flush();
         manager.getTransaction().commit();
+    }
+
+    public String[][] getAllUsers(){
+        String[][] ret = new String[2][50];
+        ret[0][0] = "Professeurs";
+        ret[1][0] = "Etudiant";
+        RepositoryRequests repreq = new RepositoryRequests();
+        List<Etudiant> e = repreq.getAllEtudiants();
+        List<Professeur> p = repreq.getAllProfesseurs();
+        int i = 1;
+        for (Etudiant etudiant : e) {
+            ret[1][i] = etudiant.toString();
+            i++;
+        }
+        i = 1;
+            
+        for (Professeur professeur : p) {
+            ret[0][i] = professeur.toString();
+            i++;
+        }
+        return ret;
     }
 }
