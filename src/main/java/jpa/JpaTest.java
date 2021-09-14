@@ -31,8 +31,8 @@ public class JpaTest {
 
     public JpaTest(EntityManager manager) {
 		this.manager = manager;
-		this.repoReq = new RepositoryRequests(manager);
-		this.rdvService = new RdvService(manager);
+		this.repoReq = new RepositoryRequests();
+		this.rdvService = new RdvService();
 	}
 
 	/**
