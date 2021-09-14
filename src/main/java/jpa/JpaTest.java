@@ -62,7 +62,7 @@ public class JpaTest {
     }
 
 	private void test(){
-		System.out.println("Debut des tests");
+		/*System.out.println("Debut des tests");
 		System.out.println("Creation des etudiants");
 		Etudiant e1 = new Etudiant("Harry Potter");
 		Etudiant e2 = new Etudiant("Hermione Granger");
@@ -93,7 +93,7 @@ public class JpaTest {
 		System.out.println("Prise du rdv par un étudiant");
 		Etudiant etudiantFromDb = repoReq.findEtudiantByName("Harry Potter");
 		rdvService.prendreRdv(rdv, etudiantFromDb);
-		manager.flush();
+		manager.flush(); */
 	}
 	
 	private void resetDb(){
