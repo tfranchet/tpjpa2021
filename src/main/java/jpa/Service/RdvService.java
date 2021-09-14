@@ -60,33 +60,25 @@ public class RdvService {
     }
     //supprimer un rdv
     public void supprimerRdv(Rdv rdv){
-        manager.remove(rdv);
         Etudiant etudiant = rdv.getEtudiant();
         Professeur professeur = rdv.getProfesseur();
-        etudiant.removeRdv(rdv);
-        professeur.removeRdv(rdv);
-        manager.persist(etudiant);
-        manager.persist(professeur);
+        if(etudiant != null){
+            etudiant.removeRdv(rdv);
+            manager.persist(etudiant);
+        }
+        if(professeur != null){
+            professeur.removeRdv(rdv);
+            manager.persist(professeur);
+        }
+        manager.remove(rdv);
         manager.flush();
     }
 
         //supprimer des rdvs
         public void supprimerRdvs(List<Rdv> rdvs){
-            for (Rdv rdv : rdvs) {
-                Etudiant etudiant = rdv.getEtudiant();
-                Professeur professeur = rdv.getProfesseur();
-                if(etudiant != null){
-                    etudiant.removeRdv(rdv);
-                    manager.persist(etudiant);
-                }
-                if(professeur != null){
-                    professeur.removeRdv(rdv);
-                    manager.persist(professeur);
-                }
-            }
-            manager.flush();
-            for (Rdv rdv : rdvs) {
-                manager.remove(rdv);
+            Object[] it = rdvs.toArray();
+            for ( int i = 0; i < it.length; i++) {
+                supprimerRdv((Rdv)it[i]);
             }
         }
     //décommander un rdv
