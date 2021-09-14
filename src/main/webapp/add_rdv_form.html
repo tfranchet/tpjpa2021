@@ -1,0 +1,24 @@
+<html>
+<body>
+    <form id="form" name="form" action="/rdv/create/" method="post">
+        <label for="jour">Jour:</label>
+        <input type="date" id="jour" name="jour"
+            min="2021-01-01" ><br>
+            <label for="heureDebut">Heure debut:</label>
+            <input type="time" id="heureDebut" name="heureDebut"
+       min="09:00" max="18:00" required><br>
+           <label for="heureFin">Heure Fin:</label>
+            <input type="time" id="heureFin" name="heureFin"
+       min="09:00" max="18:00" required><br>
+        <input type="text" id="prof" name="prof" hidden>
+        <input type="submit" id="send" name="send">
+      </form> 
+</body>
+</html>
+
+<script>
+const params = new URLSearchParams(document.location.search);
+const s = params.get("id");
+var myf = document.getElementById('prof');
+myf.value = s;
+</script>

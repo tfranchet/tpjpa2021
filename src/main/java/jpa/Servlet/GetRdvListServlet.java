@@ -10,31 +10,31 @@ import javax.servlet.http.HttpServletResponse;
 
 import jpa.Service.*;
 
-@WebServlet(name="listUser",
-urlPatterns={"/user/list"})
-public class GetUserListServlet extends HttpServlet {
+@WebServlet(name="listServlet",
+urlPatterns={"/rdv/list/"})
+public class GetRdvListServlet extends HttpServlet {
 
         public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException{
 
-        System.out.println(request.getParameter("email"));
         response.setContentType("text/html");
         PrintWriter out = response.getWriter();
-        UsersService usersService = new UsersService();
-        String[][] usersinfo = usersService.getAllUsers();
+        RdvService rdvService = new RdvService();
+        String[] rdvinfo = rdvService.getAllRdvs();
         out.println("<HTML>\n<BODY>\n" +
-                "<H1>Liste des utilisateurs</H1>\n");
-                out.println("<h3>Professeurs</h3>");
-        for (String string : usersinfo[0]) {
-                if(string != null)
-                out.println("<LI>" + string + "</LI>");
-        };
-        out.println("<h3>Etudiants</h3>");
-        for (String string : usersinfo[1]) {
+                "<H1>Liste des rdv</H1>\n");
+                out.println("<h3>rdvs</h3>");
+        for (String string : rdvinfo) {
                 if(string != null)
                 out.println("<LI>" + string + "</LI>");
         };
         out.println("</UL>\n" +                
-        "</BODY></HTML>" 
+        "</BODY></HTML>" +
+        "<script>" + 
+        "const params = new URLSearchParams(document.location.search);" + 
+        "const s = params.get(\"id\");" + 
+        "var myf = document.getElementById(\"redirect\");" +
+        "myf.href += \"&idEtudiant=\" + s;" +
+        "</script>"
         );
 }
 

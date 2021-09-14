@@ -1,5 +1,8 @@
 package jpa.Service;
 
+import java.sql.Time;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -19,14 +22,30 @@ public class RdvService {
     }
 
     //cré des rdv disponibles pour les etudiants
-    public Rdv createPossibleRdv(Date dateDebut, long duration, Professeur professeur){
-        Date dateFin = new Date();
-        dateFin.setTime(dateDebut.getTime() + duration); // 1h base
-        Rdv ret = new Rdv(professeur, dateDebut, dateFin);
-        professeur.addRdv(ret);
-        manager.persist(ret);
-        manager.persist(professeur);
-        return ret;
+    public Rdv createPossibleRdv(String date, String heureDebut, String heureFin, String professeurId) {
+        String dated = date + "-" +heureDebut;
+        String datef = date + "-" +heureFin;
+        Long pId = Long.parseLong(professeurId);
+        Professeur professeur = manager.find(Professeur.class, pId);
+        Date date1;
+        Date date2;
+        try {
+            date1 = new SimpleDateFormat("yyyy-mm-dd-HH:mm").parse(dated);
+            date2=new SimpleDateFormat("yyyy-mm-dd-HH:mm").parse(datef); 
+            Rdv ret = new Rdv(professeur, date1, date2);
+            professeur.addRdv(ret);
+            manager.getTransaction().begin();
+            manager.persist(ret);
+            manager.persist(professeur);
+            manager.flush();
+            manager.getTransaction().commit();
+            return ret;
+        } catch (ParseException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+            return null;
+        }  
+        
     }
     public Rdv createPossibleRdv(Date dateDebut, Professeur professeur){
         Rdv ret = new Rdv(professeur, dateDebut);
@@ -37,12 +56,18 @@ public class RdvService {
     }
     
     //assign un étudiant au rdv
-    public void prendreRdv(Rdv rdv, Etudiant etudiant){
+    public void prendreRdv(String rdvid, String etudiantid){
+        Long rId = Long.parseLong(rdvid);
+        Rdv rdv = manager.find(Rdv.class, rId);
+        Long eId = Long.parseLong(etudiantid);
+        Etudiant etudiant = manager.find(Etudiant.class, eId);
         rdv.setEtudiant(etudiant);
         etudiant.addRdv(rdv);
+        manager.getTransaction().begin();
         manager.persist(rdv);
         manager.persist(etudiant);
         manager.flush();
+        manager.getTransaction().commit();
     }
         //decaler un rdv
     public void decalerRdv(Rdv rdv, Date heureDebut){
@@ -100,5 +125,20 @@ public class RdvService {
         manager.persist(etudiant);
         }
         manager.flush();
+    }
+
+    public String[] getAllRdvs(){
+        String[] ret = new String[50];
+        RepositoryRequests repreq = new RepositoryRequests();
+        List<Rdv> e = repreq.getAllRdvs();
+        int i = 0;
+        for (Rdv rdv : e) {
+            ret[i] = rdv.toString();
+            if(rdv.getEtudiant() == null){
+                ret[i] += "<a href=\"http://localhost:8080/rdv/take/?idRdv=" + rdv.getId() + "\" id=\"redirect\"> Prendre rdv </a>";
+            }
+            i++;
+        }
+        return ret;
     }
 }

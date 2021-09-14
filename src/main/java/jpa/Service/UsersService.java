@@ -47,13 +47,15 @@ public class UsersService {
         int i = 0;
         for (Etudiant etudiant : e) {
             ret[1][i] = etudiant.toString() + "<a href=\"http://localhost:8080/user/rm/?id=" + etudiant.getId() + "\"> Delete </a>";
+            ret[1][i] += "<a href=\"http://localhost:8080/rdv/list/?id=" + etudiant.getId() + "\"> Prendre rdv </a>";
             i++;
         }
         i = 0;
             
         for (Professeur professeur : p) {
             ret[0][i] = professeur.toString()+ "<a href=\"http://localhost:8080/user/rm/?id=" + professeur.getId() + "\"> Delete </a>";
-            ;
+            ret[0][i] += "<a href=\"http://localhost:8080/rdv/create/?id=" + professeur.getId() + "\"> Creer rdv </a>";
+            
             i++;
         }
         return ret;
@@ -76,6 +78,5 @@ public class UsersService {
         System.out.println(id);
         manager.flush();
         manager.getTransaction().commit();
-        
     }
 }
