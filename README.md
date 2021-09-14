@@ -6,3 +6,7 @@
  # V2
  Interface web permettant de dialoguer avec la db
  Creation/prise de rdv
+
+ Url list users : /user/list
+ add user : /user/add
+ list Rdv : /rdv/list
