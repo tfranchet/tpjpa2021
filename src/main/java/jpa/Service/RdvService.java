@@ -127,18 +127,10 @@ public class RdvService {
         manager.flush();
     }
 
-    public String[] getAllRdvs(){
+    public List<Rdv> getAllRdvs(){
         String[] ret = new String[50];
         RepositoryRequests repreq = new RepositoryRequests();
         List<Rdv> e = repreq.getAllRdvs();
-        int i = 0;
-        for (Rdv rdv : e) {
-            ret[i] = rdv.toString();
-            if(rdv.getEtudiant() == null){
-                ret[i] += "<a href=\"http://localhost:8080/rdv/take/?idRdv=" + rdv.getId() + "\" id=\"redirect\"> Prendre rdv </a>";
-            }
-            i++;
-        }
-        return ret;
+        return e;
     }
 }
