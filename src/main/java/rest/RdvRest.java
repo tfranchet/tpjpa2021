@@ -1,10 +1,18 @@
 package rest;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
 import java.util.List;
 
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.ws.rs.*;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import javax.ws.rs.ext.Provider;
 
 import jpa.Entity.Rdv;
 import jpa.Service.RdvService;
@@ -36,6 +44,7 @@ public class RdvRest {
     "myf.href += \"&idEtudiant=\" + s;" +
     "</script>"
     );
-    return Response.status(200).entity(out).build();
+    return Response.ok(rdvinfo.get(1)).build();
   }
+
 }
