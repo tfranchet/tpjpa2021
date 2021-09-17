@@ -9,11 +9,15 @@ import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.swing.text.Document;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.responses.*;
+import io.swagger.v3.oas.annotations.media.*;
 import jpa.Entity.Rdv;
 import jpa.Service.RdvService;
 
@@ -22,7 +26,17 @@ public class RdvRest {
 
   @GET
   @Path("/list")
-  public Response listRdv()  {
+  @Operation(summary = "List all existing RDV",
+    tags = {"rdv"},
+    description = "Return all rdvs",
+    responses = {
+      @ApiResponse(description = "The pet", content = @Content(
+              schema = @Schema(implementation = Rdv.class)
+      )),
+      @ApiResponse(responseCode = "400", description = "Invalid ID supplied"),
+      @ApiResponse(responseCode = "404", description = "Pet not found")
+})
+    public Response listRdv()  {
       String out = "";
     RdvService rdvService = new RdvService();
     List<Rdv> rdvinfo = rdvService.getAllRdvs();
@@ -44,7 +58,23 @@ public class RdvRest {
     "myf.href += \"&idEtudiant=\" + s;" +
     "</script>"
     );
-    return Response.ok(rdvinfo.get(1)).build();
+    return Response.ok(out).build();
   }
 
+  @GET
+  @Path("/create")
+  @Operation(summary = "Create a RDV",
+    tags = {"rdv"},
+    description = "create a rdvs",
+    responses = {
+      @ApiResponse(description = "The rdv", content = @Content(
+              schema = @Schema(implementation = Rdv.class)
+      )),
+      @ApiResponse(responseCode = "400", description = "Invalid ID supplied"),
+      @ApiResponse(responseCode = "404", description = "Pet not found")
+})
+  public Response createRdv(HttpServletRequest request){
+    RequestDispatcher view = request.getRequestDispatcher("/add_rdv_form.html");
+    return Response.ok(view.toString()).build();
+  }
 }

@@ -8,8 +8,10 @@ import java.util.logging.Logger;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
 
 @Path("/api")
+@Produces({"application/json", "application/xml"})
 public class SwaggerRessource {
 
     private static final Logger logger = Logger.getLogger(SwaggerRessource.class.getName());

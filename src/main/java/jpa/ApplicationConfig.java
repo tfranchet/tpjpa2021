@@ -12,6 +12,7 @@ import io.swagger.v3.jaxrs2.integration.resources.OpenApiResource;
 import jpa.Entity.Etudiant;
 import jpa.Entity.Professeur;
 import jpa.Entity.Rdv;
+import rest.PersonneRest;
 import rest.RdvRest;
 import rest.SwaggerRessource;
 
@@ -28,6 +29,7 @@ public class ApplicationConfig extends Application {
 
         //Your own resources. 
         resources.add(RdvRest.class);
+        resources.add(PersonneRest.class);
         resources.add(SwaggerRessource.class);
 		return resources;
 	}
